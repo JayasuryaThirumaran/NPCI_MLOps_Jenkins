@@ -1,0 +1,30 @@
+pipeline {
+    agent any
+    stages {
+        stage('Checkout Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/your-username/mlops-jenkins-pipeline.git'
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh 'pip install -r requirements.txt'
+            }
+        }
+        stage('Train Model') {
+            steps {
+                sh 'python train.py'
+            }
+        }
+        stage('Evaluate Model') {
+            steps {
+                sh 'python evaluate.py'
+            }
+        }
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'model.pkl', fingerprint: true
+            }
+        }
+    }
+}
